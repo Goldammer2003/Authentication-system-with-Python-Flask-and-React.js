@@ -20,7 +20,7 @@ def handle_hello():
 
     return jsonify(response_body), 200
 
-@api.route("/login", methods ['POST'])
+@api.route("/login", methods=['POST'])
 def handle_login():
     email=request.json.get("email",None)
     password=request.json.get('password',None)
@@ -33,7 +33,7 @@ def handle_login():
     return jsonify ({"access_token":access_token, "user":user.serialize()})
 
 
-@api.route("register",methods["POST"])
+@api.route("/register",methods=["POST"])
 def handle_register():
     body=request.json
     user=User(email=body["email"], password=body["password"])
