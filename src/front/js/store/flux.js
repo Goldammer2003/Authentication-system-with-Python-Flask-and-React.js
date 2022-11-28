@@ -2,18 +2,7 @@ const getState = ({ getStore, getActions, setStore }) => {
   return {
     store: {
       message: null,
-      demo: [
-        {
-          title: "FIRST",
-          background: "white",
-          initial: "white",
-        },
-        {
-          title: "SECOND",
-          background: "white",
-          initial: "white",
-        },
-      ],
+      user: [],
     },
     actions: {
       // Use getActions to call a function within a fuction
@@ -48,15 +37,32 @@ const getState = ({ getStore, getActions, setStore }) => {
         setStore({ demo: demo });
       },
 
-      registerusers: async (email, password) => {
-        const response = await fetch(
-          "https://3001-goldammer20-authenticat-ifcok8dmb0z.ws-eu77.gitpod.io/register",
+      loginToken: async (email, password) => {
+        console.log("function called");
+        const resp = await fetch(
+          "https://3001-goldammer20-authenticat-5042mlqn6s1.ws-eu77.gitpod.io/api/login",
           {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ email, password }),
           }
         );
+        console.log("after fetch");
+        if (!resp.ok) throw "Problem with the response";
+
+        if (resp.status === 401) {
+          throw "Invalid credentials";
+        } else if (resp.status === 400) {
+          throw "Invalid email or password format";
+        }
+
+        const data = await resp.json();
+        console.log("data", data);
+        // save your token in the sessionStorage
+        setStore({ user: data });
+        sessionStorage.setItem("jwt-token", data.access_token);
+        // console.log(loggId)
+        return data.access_token;
       },
     },
   };

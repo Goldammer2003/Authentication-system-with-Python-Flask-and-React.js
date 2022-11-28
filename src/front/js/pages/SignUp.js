@@ -53,7 +53,11 @@ export const SignUp = () => {
             Active
           </label>
         </div>
-        <button type="submit" class="btn btn-primary">
+        <button
+          type="submit"
+          class="btn btn-primary"
+          onClick={() => actions.loginToken(userEmail, userPassword)}
+        >
           Submit
         </button>
       </form>
